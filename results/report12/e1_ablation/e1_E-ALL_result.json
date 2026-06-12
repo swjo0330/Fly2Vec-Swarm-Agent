@@ -1,0 +1,59 @@
+{
+  "best_epoch": 40,
+  "pattern_accuracy": 0.8967,
+  "anomaly_accuracy": 0.95,
+  "collision_recall": 0.6727,
+  "f1_macro": 0.7876,
+  "per_class_recall": {
+    "cooperative_search": 0.9962,
+    "relay_move": 0.995,
+    "collision_risk": 0.6727,
+    "coverage_overlap": 0.4615
+  },
+  "per_class_f1": {
+    "cooperative_search": 0.9981,
+    "relay_move": 0.9302,
+    "collision_risk": 0.6066,
+    "coverage_overlap": 0.6154
+  },
+  "layer1_type_weights": {
+    "Sequential": 0.1778,
+    "Proximity": 0.3563,
+    "Coverage": 0.1268,
+    "Temporal": 0.1877,
+    "Anomaly": 0.1514
+  },
+  "layer2_type_weights": {
+    "Sequential": 0.174,
+    "Proximity": 0.2765,
+    "Coverage": 0.1669,
+    "Temporal": 0.1347,
+    "Anomaly": 0.248
+  },
+  "sample_edge_counts": {
+    "Sequential": 22,
+    "Proximity": 122,
+    "Coverage": 4,
+    "Temporal": 4,
+    "Anomaly": 2
+  },
+  "training_time_sec": 1461.2,
+  "n_train": 2400,
+  "n_test": 600,
+  "condition_id": "E-ALL",
+  "condition_name": "전체(5종)",
+  "active_edge_types": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "active_edge_names": [
+    "Sequential",
+    "Proximity",
+    "Coverage",
+    "Temporal",
+    "Anomaly"
+  ]
+}

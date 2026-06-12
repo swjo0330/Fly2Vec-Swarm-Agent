@@ -1,0 +1,45 @@
+{
+  "best_epoch": 30,
+  "pattern_accuracy": 0.4733,
+  "anomaly_accuracy": 0.925,
+  "collision_recall": 0.0,
+  "f1_macro": 0.3814,
+  "per_class_recall": {
+    "cooperative_search": 0.2556,
+    "relay_move": 0.7264,
+    "collision_risk": 0.0,
+    "coverage_overlap": 0.8974
+  },
+  "per_class_f1": {
+    "cooperative_search": 0.3799,
+    "relay_move": 0.5233,
+    "collision_risk": 0.0,
+    "coverage_overlap": 0.6222
+  },
+  "layer1_type_weights": {
+    "Sequential": 0.2531,
+    "Proximity": 0.3513,
+    "Coverage": 0.2083,
+    "Temporal": 0.0936,
+    "Anomaly": 0.0936
+  },
+  "layer2_type_weights": {
+    "Sequential": 0.1814,
+    "Proximity": 0.2739,
+    "Coverage": 0.2783,
+    "Temporal": 0.1332,
+    "Anomaly": 0.1332
+  },
+  "sample_edge_counts": {
+    "Sequential": 22,
+    "Proximity": 122,
+    "Coverage": 4,
+    "Temporal": 0,
+    "Anomaly": 0
+  },
+  "training_time_sec": 1117.4,
+  "n_train": 2400,
+  "n_test": 600,
+  "model": "R-GAT-15d",
+  "condition": "E-SPC"
+}

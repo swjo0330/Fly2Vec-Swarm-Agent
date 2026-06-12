@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# 환경 (API 키)
+.env
+!.env.example
+
+# OS
+.DS_Store
+
+# 임시 캐시
+*.pkl
+*.pkl
+*.pptx
+
+docs/proposals/wiki/

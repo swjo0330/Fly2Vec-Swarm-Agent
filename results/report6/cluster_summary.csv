@@ -1,0 +1,5 @@
+cluster,count,pct,score_mean,score_max,dominant_type,type_distribution,n_prox_edges_avg,n_cov_edges_avg
+Noise,4,0.8,0.884,0.974,coverage_overlap,"{'coverage_overlap': 3, 'collision_risk': 1}",2022,136
+C0,172,34.4,0.209,0.536,coverage_overlap,"{'coverage_overlap': 117, 'collision_risk': 49, 'relay_move': 5, 'cooperative_search': 1}",2977,394
+C1,95,19.0,0.218,0.399,collision_risk,"{'collision_risk': 65, 'relay_move': 21, 'coverage_overlap': 5, 'cooperative_search': 4}",512,0
+C2,229,45.8,0.079,0.225,cooperative_search,"{'cooperative_search': 120, 'relay_move': 99, 'collision_risk': 10}",0,0

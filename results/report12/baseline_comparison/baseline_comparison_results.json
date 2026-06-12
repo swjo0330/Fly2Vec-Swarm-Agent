@@ -1,0 +1,125 @@
+{
+  "experiment": "Baseline_Comparison_v3",
+  "date": "2026-05-29",
+  "data_version": "v3",
+  "config": {
+    "n_scenarios": 3000,
+    "epochs": 50,
+    "seed": 42,
+    "feature_dim": 15,
+    "condition": "E-SPC"
+  },
+  "models": [
+    {
+      "best_epoch": 30,
+      "pattern_accuracy": 0.4733,
+      "anomaly_accuracy": 0.925,
+      "collision_recall": 0.0,
+      "f1_macro": 0.3814,
+      "per_class_recall": {
+        "cooperative_search": 0.2556,
+        "relay_move": 0.7264,
+        "collision_risk": 0.0,
+        "coverage_overlap": 0.8974
+      },
+      "per_class_f1": {
+        "cooperative_search": 0.3799,
+        "relay_move": 0.5233,
+        "collision_risk": 0.0,
+        "coverage_overlap": 0.6222
+      },
+      "layer1_type_weights": {
+        "Sequential": 0.2531,
+        "Proximity": 0.3513,
+        "Coverage": 0.2083,
+        "Temporal": 0.0936,
+        "Anomaly": 0.0936
+      },
+      "layer2_type_weights": {
+        "Sequential": 0.1814,
+        "Proximity": 0.2739,
+        "Coverage": 0.2783,
+        "Temporal": 0.1332,
+        "Anomaly": 0.1332
+      },
+      "sample_edge_counts": {
+        "Sequential": 22,
+        "Proximity": 122,
+        "Coverage": 4,
+        "Temporal": 0,
+        "Anomaly": 0
+      },
+      "training_time_sec": 1117.4,
+      "n_train": 2400,
+      "n_test": 600,
+      "model": "R-GAT-15d",
+      "condition": "E-SPC"
+    },
+    {
+      "best_epoch": 10,
+      "pattern_accuracy": 0.3933,
+      "anomaly_accuracy": 0.88,
+      "collision_recall": 0.0,
+      "f1_macro": 0.2801,
+      "per_class_recall": {
+        "cooperative_search": 0.0414,
+        "relay_move": 0.8905,
+        "collision_risk": 0.0,
+        "coverage_overlap": 0.5897
+      },
+      "per_class_f1": {
+        "cooperative_search": 0.0769,
+        "relay_move": 0.5265,
+        "collision_risk": 0.0,
+        "coverage_overlap": 0.5169
+      },
+      "layer1_type_weights": {},
+      "layer2_type_weights": {},
+      "sample_edge_counts": {
+        "Sequential": 22,
+        "Proximity": 122,
+        "Coverage": 4,
+        "Temporal": 0,
+        "Anomaly": 0
+      },
+      "training_time_sec": 275.6,
+      "n_train": 2400,
+      "n_test": 600,
+      "model": "GCN-15d",
+      "condition": "E-SPC"
+    },
+    {
+      "best_epoch": 1,
+      "pattern_accuracy": 0.5783,
+      "anomaly_accuracy": 0.875,
+      "collision_recall": 0.0,
+      "f1_macro": 0.4418,
+      "per_class_recall": {
+        "cooperative_search": 0.6391,
+        "relay_move": 0.5871,
+        "collision_risk": 0.0,
+        "coverage_overlap": 0.7564
+      },
+      "per_class_f1": {
+        "cooperative_search": 0.6814,
+        "relay_move": 0.5592,
+        "collision_risk": 0.0,
+        "coverage_overlap": 0.5268
+      },
+      "layer1_type_weights": {},
+      "layer2_type_weights": {},
+      "sample_edge_counts": {
+        "Sequential": 22,
+        "Proximity": 122,
+        "Coverage": 4,
+        "Temporal": 0,
+        "Anomaly": 0
+      },
+      "training_time_sec": 810.2,
+      "n_train": 2400,
+      "n_test": 600,
+      "model": "GAT-15d",
+      "condition": "E-SPC"
+    }
+  ]
+}

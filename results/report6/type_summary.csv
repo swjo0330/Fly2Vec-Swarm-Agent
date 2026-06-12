@@ -1,0 +1,7 @@
+,ensemble_score,ensemble_score,ensemble_score,n_edges_prox,n_edges_cov,n_drones
+,mean,std,max,mean,mean,mean
+type,,,,,,
+collision_risk,0.208,0.088,0.707,389.008,31.856,3.512
+cooperative_search,0.083,0.057,0.361,4.864,0.064,3.904
+coverage_overlap,0.22,0.135,0.974,3838.688,511.136,4.048
+relay_move,0.115,0.091,0.421,317.712,3.36,3.544

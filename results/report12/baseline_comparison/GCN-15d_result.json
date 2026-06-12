@@ -1,0 +1,33 @@
+{
+  "best_epoch": 10,
+  "pattern_accuracy": 0.3933,
+  "anomaly_accuracy": 0.88,
+  "collision_recall": 0.0,
+  "f1_macro": 0.2801,
+  "per_class_recall": {
+    "cooperative_search": 0.0414,
+    "relay_move": 0.8905,
+    "collision_risk": 0.0,
+    "coverage_overlap": 0.5897
+  },
+  "per_class_f1": {
+    "cooperative_search": 0.0769,
+    "relay_move": 0.5265,
+    "collision_risk": 0.0,
+    "coverage_overlap": 0.5169
+  },
+  "layer1_type_weights": {},
+  "layer2_type_weights": {},
+  "sample_edge_counts": {
+    "Sequential": 22,
+    "Proximity": 122,
+    "Coverage": 4,
+    "Temporal": 0,
+    "Anomaly": 0
+  },
+  "training_time_sec": 275.6,
+  "n_train": 2400,
+  "n_test": 600,
+  "model": "GCN-15d",
+  "condition": "E-SPC"
+}

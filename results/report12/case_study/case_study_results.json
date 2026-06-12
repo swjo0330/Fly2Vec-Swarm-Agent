@@ -1,0 +1,30 @@
+{
+  "experiment": "Case_Study_FN_Analysis_v3",
+  "date": "2026-05-30",
+  "data_version": "v3",
+  "model_performance": {
+    "pattern_accuracy": 0.6233,
+    "anomaly_accuracy": 0.9883,
+    "collision_recall": 0.2
+  },
+  "fn_count": 0,
+  "tp_count": 133,
+  "fn_summary": {
+    "label": "FN (이상→정상 오분류)",
+    "count": 0
+  },
+  "tp_summary": {
+    "label": "TP (이상 정탐지)",
+    "count": 133,
+    "avg_proximity_edges": 12193.7,
+    "avg_proximity_dist": 147.9,
+    "avg_coverage_edges": 1286.9,
+    "avg_total_edges": 13635.8,
+    "avg_n_nodes": 81.5,
+    "type_distribution": {
+      "coverage_overlap": 78,
+      "collision_risk": 55
+    }
+  },
+  "fn_examples": []
+}

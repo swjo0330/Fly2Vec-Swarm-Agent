@@ -1,0 +1,54 @@
+{
+  "best_epoch": 10,
+  "pattern_accuracy": 0.48,
+  "anomaly_accuracy": 0.9833,
+  "collision_recall": 0.5091,
+  "f1_macro": 0.5108,
+  "per_class_recall": {
+    "cooperative_search": 0.0,
+    "relay_move": 0.9204,
+    "collision_risk": 0.5091,
+    "coverage_overlap": 0.9615
+  },
+  "per_class_f1": {
+    "cooperative_search": 0.0,
+    "relay_move": 0.564,
+    "collision_risk": 0.6222,
+    "coverage_overlap": 0.8571
+  },
+  "layer1_type_weights": {
+    "Sequential": 0.2627,
+    "Proximity": 0.3026,
+    "Coverage": 0.2303,
+    "Temporal": 0.1022,
+    "Anomaly": 0.1022
+  },
+  "layer2_type_weights": {
+    "Sequential": 0.2289,
+    "Proximity": 0.284,
+    "Coverage": 0.1975,
+    "Temporal": 0.1448,
+    "Anomaly": 0.1448
+  },
+  "sample_edge_counts": {
+    "Sequential": 22,
+    "Proximity": 122,
+    "Coverage": 4,
+    "Temporal": 0,
+    "Anomaly": 0
+  },
+  "training_time_sec": 1188.9,
+  "n_train": 2400,
+  "n_test": 600,
+  "group_id": "no-speed-dist",
+  "group_name": "속도+거리 제거",
+  "masked_indices": [
+    4,
+    5,
+    6
+  ],
+  "delta_pattern": -0.1433,
+  "delta_anomaly": -0.005,
+  "delta_collision": 0.3091,
+  "delta_f1": -0.066
+}

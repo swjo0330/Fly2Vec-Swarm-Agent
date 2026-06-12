@@ -1,0 +1,7 @@
+﻿cluster,count,dominant_type,dominant_count,purity,cooperative_search,relay_move,collision_risk,coverage_overlap
+0,670,coverage_overlap,375,0.56,0,2,293,375
+1,151,cooperative_search,151,1.0,151,0,0,0
+2,192,cooperative_search,192,1.0,192,0,0,0
+3,283,relay_move,278,0.982,5,278,0,0
+4,18,cooperative_search,18,1.0,18,0,0,0
+5,104,relay_move,95,0.913,9,95,0,0

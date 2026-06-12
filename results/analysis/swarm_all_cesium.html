@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Fly2Vec: 전체 군집 시나리오 3D 시각화</title>
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.141/Build/Cesium/Cesium.js"></script>
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.141/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  #cesiumContainer { width:100%; height:70vh; }
+  #controls { padding:10px 15px; background:#1a1a2e; color:white; font-family:'Apple SD Gothic Neo',sans-serif; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  #controls h2 { font-size:15px; margin-right:10px; }
+  .btn { padding:5px 12px; border:none; border-radius:4px; cursor:pointer; font-size:12px; font-weight:bold; transition:opacity 0.2s; }
+  .btn:hover { opacity:0.8; }
+  .btn-coop { background:#2196F3; color:white; }
+  .btn-col { background:#E91E63; color:white; }
+  .btn-cov { background:#FF9800; color:white; }
+  .btn-rel { background:#FFD700; color:#333; }
+  .btn-all { background:#9C27B0; color:white; }
+  .btn-clear { background:#666; color:white; }
+  .btn.active { box-shadow:0 0 0 2px white; }
+  #stats { padding:6px 15px; background:#16213e; color:#e0e0e0; font-size:11px; font-family:monospace; }
+  #nav { padding:6px 15px; background:#0f3460; color:#e0e0e0; font-size:12px; display:flex; gap:10px; align-items:center; }
+  #analysis-layers { padding:8px 15px; background:#0d1b2a; color:#a0c4e8; font-family:'Apple SD Gothic Neo',sans-serif; font-size:12px; border-top:1px solid #1a3a5c; }
+  #analysis-layers h3 { font-size:13px; margin-right:12px; color:#64b5f6; display:inline; }
+  .layer-btn { padding:4px 10px; border:1px solid #37474f; border-radius:3px; cursor:pointer; font-size:11px; background:#263238; color:#b0bec5; margin:2px 4px; transition:all 0.2s; }
+  .layer-btn:hover { background:#37474f; }
+  .layer-btn.layer-active { background:#1565c0; color:white; border-color:#42a5f5; }
+  .nav-btn { padding:3px 10px; background:#555; color:white; border:none; border-radius:3px; cursor:pointer; font-size:11px; }
+</style>
+</head>
+<body>
+<div id="controls">
+  <h2>Fly2Vec 군집 시나리오 (3,000건)</h2>
+  <button class="btn btn-coop" onclick="filterType('cooperative_search')">협력 수색 (1,144)</button>
+  <button class="btn btn-col" onclick="filterType('collision_risk')">충돌 위험 (311)</button>
+  <button class="btn btn-cov" onclick="filterType('coverage_overlap')">수색 중복 (440)</button>
+  <button class="btn btn-rel" onclick="filterType('relay_move')">릴레이 (1,105)</button>
+  <button class="btn btn-all" onclick="filterType('all')">전체 순회</button>
+  <button class="btn" style="background:#FFD600;color:#333;" onclick="loadAll()">전체 한번에 로드</button>
+  <button class="btn btn-clear" onclick="clearAll()">초기화</button>
+</div>
+<div id="nav">
+  <button class="nav-btn" onclick="prevScenario()">◀ 이전</button>
+  <span id="navLabel">시나리오를 선택하세요</span>
+  <button class="nav-btn" onclick="nextScenario()">다음 ▶</button>
+</div>
+<div id="stats"></div>
+<div id="analysis-layers">
+  <h3>해석 레이어</h3>
+  <span id="layer-buttons"></span>
+  <span style="font-size:10px; color:#546e7a; margin-left:10px;">데이터 로드 시 활성화됩니다</span>
+</div>
+<div id="cesiumContainer"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+
+Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiOGMzMTZmMC00MjllLTQwNjEtOWYyYS1iN2MyNTNjYjJhN2QiLCJpZCI6NDI2OTEzLCJzdWIiOiJzZW9uZ3dvbi5qbyIsImlzcyI6Imh0dHBzOi8vaW9uLmNlc2l1bS5jb20iLCJhdWQiOiJzd2pvIiwiaWF0IjoxNzc3ODY0ODYyfQ.E6QwFZT5VpIqWetNW3GzyMUnEAm_3Oo7Y9QO1qP-ezI';
+
+const viewer = new Cesium.Viewer('cesiumContainer', {
+  timeline: false, animation: false, homeButton: true,
+  sceneModePicker: true, baseLayerPicker: true,
+  navigationHelpButton: false, geocoder: false,
+  terrain: Cesium.Terrain.fromWorldTerrain(),
+});
+
+const typeColors = {
+  cooperative_search: Cesium.Color.fromCssColorString('#2196F3'),
+  collision_risk: Cesium.Color.fromCssColorString('#E91E63'),
+  coverage_overlap: Cesium.Color.fromCssColorString('#FF9800'),
+  relay_move: Cesium.Color.fromCssColorString('#FFD700'),
+};
+const droneShades = [1.0, 0.7, 0.5, 0.85, 0.6];
+
+// 데이터 로드
+const resp = await fetch('swarm_all_scenarios.json');
+const allScenarios = await resp.json();
+console.log(`Loaded ${allScenarios.length} scenarios`);
+
+let currentFilter = 'all';
+let filteredList = [...allScenarios];
+let currentIdx = -1;
+
+// 해석 레이어 상태 (clearAll보다 먼저 선언 — TDZ 방지)
+const LAYER_REGISTRY = [];
+const _layerEntities = {};
+const _layerLoaded = {};
+
+function clearAll() {
+  viewer.entities.removeAll();
+  currentIdx = -1;
+  document.getElementById('navLabel').textContent = '시나리오를 선택하세요';
+  document.getElementById('stats').textContent = '';
+  // 해석 레이어 상태 리셋 (removeAll로 엔티티 삭제 후 재로드 가능하도록)
+  if (typeof LAYER_REGISTRY !== 'undefined') {
+    LAYER_REGISTRY.forEach(cfg => {
+      _layerEntities[cfg.id] = [];
+      _layerLoaded[cfg.id] = false;
+      const btn = document.getElementById('layer-btn-' + cfg.id);
+      if (btn) { btn.classList.remove('layer-active'); btn.style.opacity = ''; btn.textContent = cfg.name; }
+    });
+  }
+}
+
+function addScenario(scenario) {
+  const baseColor = typeColors[scenario.type] || Cesium.Color.WHITE;
+  scenario.drones.forEach((drone, di) => {
+    const shade = droneShades[di % droneShades.length];
+    const color = baseColor.withAlpha(shade);
+
+    // 경로선 (지형 관통 방지: depthFailMaterial)
+    const positions = drone.lats.map((lat, i) =>
+      Cesium.Cartesian3.fromDegrees(drone.lngs[i], lat, drone.alts[i])
+    );
+    viewer.entities.add({
+      polyline: {
+        positions: positions,
+        width: 3,
+        material: color,
+        depthFailMaterial: color.withAlpha(0.4),
+        clampToGround: false,
+      },
+    });
+
+    // 모든 드론의 시작점 + 끝점 마커
+    viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(drone.lngs[0], drone.lats[0], drone.alts[0]),
+      point: {
+        pixelSize: 10, color: color,
+        outlineColor: Cesium.Color.WHITE, outlineWidth: 2,
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      },
+    });
+    const last = drone.lats.length - 1;
+    viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(drone.lngs[last], drone.lats[last], drone.alts[last]),
+      point: {
+        pixelSize: 7, color: color,
+        outlineColor: Cesium.Color.BLACK, outlineWidth: 1,
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      },
+    });
+  });
+}
+
+function showSingleScenario(idx) {
+  clearAll();
+  if (idx < 0 || idx >= filteredList.length) return;
+  currentIdx = idx;
+  const s = filteredList[idx];
+  addScenario(s);
+
+  const typeKor = {cooperative_search:'협력수색', collision_risk:'충돌위험',
+                   coverage_overlap:'수색중복', relay_move:'릴레이'};
+  document.getElementById('navLabel').textContent =
+    `${idx+1}/${filteredList.length} | ${s.id} | ${typeKor[s.type]} | ${s.n_drones}대`;
+  document.getElementById('stats').textContent =
+    `ID: ${s.id} | Type: ${s.type} | Drones: ${s.n_drones} | ` +
+    `WPs: ${s.drones.reduce((a,d)=>a+d.lats.length, 0)} | ` +
+    `Center: ${s.center[0].toFixed(3)}, ${s.center[1].toFixed(3)}`;
+
+  viewer.camera.flyTo({
+    destination: Cesium.Cartesian3.fromDegrees(s.center[1], s.center[0], 2000),
+    orientation: { heading: 0, pitch: Cesium.Math.toRadians(-45), roll: 0 },
+    duration: 1.0,
+  });
+}
+
+function filterType(type) {
+  currentFilter = type;
+  if (type === 'all') {
+    filteredList = [...allScenarios];
+  } else {
+    filteredList = allScenarios.filter(s => s.type === type);
+  }
+  // 해당 타입 전체를 한번에 로드
+  clearAll();
+  filteredList.forEach(s => addScenario(s));
+  currentIdx = 0;
+  const typeKor = {cooperative_search:'협력수색', collision_risk:'충돌위험',
+                   coverage_overlap:'수색중복', relay_move:'릴레이', all:'전체'};
+  document.getElementById('navLabel').textContent =
+    `${typeKor[type] || type} ${filteredList.length}건 로드 | ◀▶로 개별 탐색`;
+  document.getElementById('stats').textContent =
+    `Type: ${type} | Scenarios: ${filteredList.length} | Drones: ${filteredList.reduce((a,s)=>a+s.n_drones,0)}`;
+
+  // 카메라 — 필터 데이터 중심
+  if (filteredList.length > 0) {
+    const avgLat = filteredList.reduce((a,s)=>a+s.center[0],0)/filteredList.length;
+    const avgLon = filteredList.reduce((a,s)=>a+s.center[1],0)/filteredList.length;
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(avgLon, avgLat, type==='all'?500000:100000),
+      orientation: { heading:0, pitch:Cesium.Math.toRadians(-60), roll:0 },
+      duration: 1.0,
+    });
+  }
+  // 버튼 active 표시
+  document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+  const btnMap = {cooperative_search:'btn-coop', collision_risk:'btn-col',
+                  coverage_overlap:'btn-cov', relay_move:'btn-rel', all:'btn-all'};
+  const cls = btnMap[type];
+  if (cls) document.querySelector('.'+cls)?.classList.add('active');
+}
+
+function prevScenario() {
+  if (filteredList.length === 0) return;
+  const idx = currentIdx <= 0 ? filteredList.length - 1 : currentIdx - 1;
+  showSingleScenario(idx);
+}
+
+function nextScenario() {
+  if (filteredList.length === 0) return;
+  const idx = currentIdx >= filteredList.length - 1 ? 0 : currentIdx + 1;
+  showSingleScenario(idx);
+}
+
+function loadAll() {
+  clearAll();
+  allScenarios.forEach(s => addScenario(s));
+  document.getElementById('navLabel').textContent =
+    `전체 ${allScenarios.length}건 로드 완료 (${allScenarios.reduce((a,s)=>a+s.n_drones,0)} 드론)`;
+  document.getElementById('stats').textContent =
+    `cooperative:50 | collision:50 | coverage:50 | relay:50 | 총 WPs: ${allScenarios.reduce((a,s)=>a+s.drones.reduce((b,d)=>b+d.lats.length,0),0)}`;
+
+  // 한국 전체 뷰
+  viewer.camera.flyTo({
+    destination: Cesium.Cartesian3.fromDegrees(127.5, 36.0, 500000),
+    orientation: { heading: 0, pitch: Cesium.Math.toRadians(-60), roll: 0 },
+    duration: 1.5,
+  });
+}
+window.loadAll = loadAll;
+
+// 키보드: ← → 로 탐색
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') prevScenario();
+  if (e.key === 'ArrowRight') nextScenario();
+});
+
+// 초기: 협력 수색 첫 번째
+filterType('cooperative_search');
+
+// window에 함수 노출 (onclick용)
+window.filterType = filterType;
+window.clearAll = clearAll;
+window.prevScenario = prevScenario;
+window.nextScenario = nextScenario;
+window.showSingleScenario = showSingleScenario;
+
+// ═══════════════════════════════════════════════════════════
+// 해석 레이어 프레임워크 (기존 코드 변경 없음, 추가만)
+// ═══════════════════════════════════════════════════════════
+// LAYER_REGISTRY, _layerEntities, _layerLoaded는 상단(clearAll 앞)에서 선언됨
+
+function registerLayer(config) {
+  // config: { id, name, color, dataUrl }
+  LAYER_REGISTRY.push(config);
+  const container = document.getElementById('layer-buttons');
+  const btn = document.createElement('button');
+  btn.className = 'layer-btn';
+  btn.id = 'layer-btn-' + config.id;
+  btn.textContent = config.name;
+  btn.onclick = () => toggleLayer(config.id);
+  container.appendChild(btn);
+  _layerEntities[config.id] = [];
+  _layerLoaded[config.id] = false;
+}
+
+async function toggleLayer(layerId) {
+  const btn = document.getElementById('layer-btn-' + layerId);
+  const config = LAYER_REGISTRY.find(l => l.id === layerId);
+  if (!config) return;
+
+  if (!_layerLoaded[layerId]) {
+    // 첫 토글: 데이터 로드
+    btn.textContent = config.name + ' ...';
+    try {
+      const resp = await fetch(config.dataUrl);
+      if (!resp.ok) {
+        btn.textContent = config.name + ' (없음)';
+        btn.style.opacity = '0.4';
+        return;
+      }
+      const data = await resp.json();
+      loadLayerEntities(layerId, data, config.color);
+      _layerLoaded[layerId] = true;
+    } catch(e) {
+      btn.textContent = config.name + ' (오류)';
+      btn.style.opacity = '0.4';
+      console.warn('레이어 로드 실패:', layerId, e);
+      return;
+    }
+  }
+
+  // 토글 on/off
+  const isActive = btn.classList.toggle('layer-active');
+  btn.textContent = config.name;
+  _layerEntities[layerId].forEach(ent => { ent.show = isActive; });
+}
+
+function loadLayerEntities(layerId, data, defaultColor) {
+  const entities = data.entities || [];
+  entities.forEach(e => {
+    let ent;
+    if (e.type === 'polyline' && e.positions) {
+      const positions = Cesium.Cartesian3.fromDegreesArrayHeights(
+        e.positions.flatMap(p => [p[1], p[0], p[2] || 50])
+      );
+      ent = viewer.entities.add({
+        polyline: {
+          positions: positions,
+          width: e.width || 2,
+          material: Cesium.Color.fromCssColorString(e.color || defaultColor || '#00ff00'),
+          clampToGround: false,
+        },
+        show: true,
+      });
+    } else if (e.type === 'point' && e.position) {
+      const pos = Cesium.Cartesian3.fromDegrees(e.position[1], e.position[0], e.position[2] || 50);
+      ent = viewer.entities.add({
+        position: pos,
+        point: {
+          pixelSize: e.size || 6,
+          color: Cesium.Color.fromCssColorString(e.color || defaultColor || '#ff0000'),
+        },
+        label: e.label ? {
+          text: e.label,
+          font: '10px sans-serif',
+          fillColor: Cesium.Color.WHITE,
+          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+          verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+          pixelOffset: new Cesium.Cartesian2(0, -12),
+        } : undefined,
+        show: true,
+      });
+    }
+    if (ent) _layerEntities[layerId].push(ent);
+  });
+}
+
+function removeLayer(layerId) {
+  (_layerEntities[layerId] || []).forEach(ent => viewer.entities.remove(ent));
+  _layerEntities[layerId] = [];
+  _layerLoaded[layerId] = false;
+  const btn = document.getElementById('layer-btn-' + layerId);
+  if (btn) btn.classList.remove('layer-active');
+}
+
+// 레이어 등록 — 존재하는 JSON 파일 우선 배치
+registerLayer({ id: 'risk-heatmap', name: 'WP 위험 색상',     color: '#E91E63', dataUrl: 'cesium_layers/risk-heatmap.json' });
+registerLayer({ id: 'e8-attention', name: 'E8 어텐션 엣지',   color: '#FF5722', dataUrl: 'cesium_layers/e8-attention.json' });
+registerLayer({ id: 'e1-ablation',  name: 'E1 엣지 비교',     color: '#4CAF50', dataUrl: 'cesium_layers/e1-ablation.json' });
+registerLayer({ id: 'error-cases',  name: '오분류 하이라이트', color: '#FF9800', dataUrl: 'cesium_layers/error-cases.json' });
+registerLayer({ id: 'route-compare',name: '추천 경로 비교',   color: '#00BCD4', dataUrl: 'cesium_layers/route-compare.json' });
+
+window.toggleLayer = toggleLayer;
+window.removeLayer = removeLayer;
+window.registerLayer = registerLayer;
+window.loadLayerEntities = loadLayerEntities;
+// ═══════════════════════════════════════════════════════════
+
+}); // DOMContentLoaded
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# 환경 (API 키)
+.env
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# IDE
+.idea/
+.vscode/
+
+# Docker volumes
+docker/volumes/
+
+# OS
+.DS_Store

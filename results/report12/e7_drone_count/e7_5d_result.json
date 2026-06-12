@@ -1,0 +1,95 @@
+{
+  "best_epoch": 20,
+  "pattern_accuracy": 0.505,
+  "anomaly_accuracy": 0.915,
+  "collision_recall": 0.0,
+  "f1_macro": 0.39,
+  "per_class_recall": {
+    "cooperative_search": 0.7386,
+    "relay_move": 0.2933,
+    "collision_risk": 0.0,
+    "coverage_overlap": 0.7778
+  },
+  "per_class_f1": {
+    "cooperative_search": 0.625,
+    "relay_move": 0.3636,
+    "collision_risk": 0.0,
+    "coverage_overlap": 0.5714
+  },
+  "layer1_type_weights": {
+    "Sequential": 0.2373,
+    "Proximity": 0.2984,
+    "Coverage": 0.1602,
+    "Temporal": 0.1521,
+    "Anomaly": 0.1521
+  },
+  "layer2_type_weights": {
+    "Sequential": 0.2141,
+    "Proximity": 0.2638,
+    "Coverage": 0.2351,
+    "Temporal": 0.1435,
+    "Anomaly": 0.1435
+  },
+  "sample_edge_counts": {
+    "Sequential": 294,
+    "Proximity": 694,
+    "Coverage": 0,
+    "Temporal": 0,
+    "Anomaly": 0
+  },
+  "training_time_sec": 475.8,
+  "n_train": 800,
+  "n_test": 200,
+  "n_drones": 5,
+  "n_scenarios": 1000,
+  "type_distribution": {
+    "cooperative_search": 395,
+    "relay_move": 360,
+    "collision_risk": 98,
+    "coverage_overlap": 147
+  },
+  "graph_statistics": {
+    "n_nodes": {
+      "mean": 101.51,
+      "std": 100.33,
+      "min": 20.0,
+      "max": 1025.0
+    },
+    "n_edges_total": {
+      "mean": 5482.55,
+      "std": 41198.93,
+      "min": 32.0,
+      "max": 1036006.0
+    },
+    "n_edges_proximity": {
+      "mean": 4764.45,
+      "std": 35316.34,
+      "min": 0.0,
+      "max": 840500.0
+    },
+    "n_edges_coverage": {
+      "mean": 525.08,
+      "std": 6879.94,
+      "min": 0.0,
+      "max": 193466.0
+    },
+    "n_edges_sequential": {
+      "mean": 193.02,
+      "std": 200.67,
+      "min": 30.0,
+      "max": 2040.0
+    },
+    "edge_density": {
+      "mean": 0.3,
+      "std": 0.38,
+      "min": 0.0,
+      "max": 1.73
+    },
+    "proximity_ratio": {
+      "mean": 0.62,
+      "std": 0.28,
+      "min": 0.0,
+      "max": 0.99
+    }
+  }
+}

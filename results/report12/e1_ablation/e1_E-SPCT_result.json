@@ -1,0 +1,57 @@
+{
+  "best_epoch": 40,
+  "pattern_accuracy": 0.8683,
+  "anomaly_accuracy": 0.9583,
+  "collision_recall": 0.6364,
+  "f1_macro": 0.7134,
+  "per_class_recall": {
+    "cooperative_search": 1.0,
+    "relay_move": 0.99,
+    "collision_risk": 0.6364,
+    "coverage_overlap": 0.2692
+  },
+  "per_class_f1": {
+    "cooperative_search": 1.0,
+    "relay_move": 0.9234,
+    "collision_risk": 0.5185,
+    "coverage_overlap": 0.4118
+  },
+  "layer1_type_weights": {
+    "Sequential": 0.1752,
+    "Proximity": 0.3211,
+    "Coverage": 0.2111,
+    "Temporal": 0.1885,
+    "Anomaly": 0.1041
+  },
+  "layer2_type_weights": {
+    "Sequential": 0.1564,
+    "Proximity": 0.2918,
+    "Coverage": 0.2656,
+    "Temporal": 0.1291,
+    "Anomaly": 0.157
+  },
+  "sample_edge_counts": {
+    "Sequential": 22,
+    "Proximity": 122,
+    "Coverage": 4,
+    "Temporal": 4,
+    "Anomaly": 0
+  },
+  "training_time_sec": 23968.1,
+  "n_train": 2400,
+  "n_test": 600,
+  "condition_id": "E-SPCT",
+  "condition_name": "순서+근접+커버리지+시간",
+  "active_edge_types": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "active_edge_names": [
+    "Sequential",
+    "Proximity",
+    "Coverage",
+    "Temporal"
+  ]
+}

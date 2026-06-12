@@ -1,0 +1,53 @@
+{
+  "best_epoch": 10,
+  "pattern_accuracy": 0.4283,
+  "anomaly_accuracy": 0.97,
+  "collision_recall": 0.0727,
+  "f1_macro": 0.3617,
+  "per_class_recall": {
+    "cooperative_search": 0.0263,
+    "relay_move": 0.8358,
+    "collision_risk": 0.0727,
+    "coverage_overlap": 1.0
+  },
+  "per_class_f1": {
+    "cooperative_search": 0.0476,
+    "relay_move": 0.5333,
+    "collision_risk": 0.1194,
+    "coverage_overlap": 0.7464
+  },
+  "layer1_type_weights": {
+    "Sequential": 0.2371,
+    "Proximity": 0.3519,
+    "Coverage": 0.1872,
+    "Temporal": 0.1119,
+    "Anomaly": 0.1119
+  },
+  "layer2_type_weights": {
+    "Sequential": 0.2337,
+    "Proximity": 0.2714,
+    "Coverage": 0.2008,
+    "Temporal": 0.147,
+    "Anomaly": 0.147
+  },
+  "sample_edge_counts": {
+    "Sequential": 22,
+    "Proximity": 122,
+    "Coverage": 4,
+    "Temporal": 0,
+    "Anomaly": 0
+  },
+  "training_time_sec": 1057.9,
+  "n_train": 2400,
+  "n_test": 600,
+  "group_id": "no-direction",
+  "group_name": "방향 제거 (bearing, bc)",
+  "masked_indices": [
+    7,
+    8
+  ],
+  "delta_pattern": -0.195,
+  "delta_anomaly": -0.0183,
+  "delta_collision": -0.1273,
+  "delta_f1": -0.2151
+}

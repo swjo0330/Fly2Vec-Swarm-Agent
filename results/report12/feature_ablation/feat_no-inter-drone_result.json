@@ -1,0 +1,56 @@
+{
+  "best_epoch": 30,
+  "pattern_accuracy": 0.7767,
+  "anomaly_accuracy": 0.89,
+  "collision_recall": 0.0182,
+  "f1_macro": 0.591,
+  "per_class_recall": {
+    "cooperative_search": 0.8985,
+    "relay_move": 0.801,
+    "collision_risk": 0.0182,
+    "coverage_overlap": 0.8333
+  },
+  "per_class_f1": {
+    "cooperative_search": 0.8935,
+    "relay_move": 0.809,
+    "collision_risk": 0.0333,
+    "coverage_overlap": 0.628
+  },
+  "layer1_type_weights": {
+    "Sequential": 0.2597,
+    "Proximity": 0.3417,
+    "Coverage": 0.219,
+    "Temporal": 0.0898,
+    "Anomaly": 0.0898
+  },
+  "layer2_type_weights": {
+    "Sequential": 0.2124,
+    "Proximity": 0.2796,
+    "Coverage": 0.3021,
+    "Temporal": 0.1029,
+    "Anomaly": 0.1029
+  },
+  "sample_edge_counts": {
+    "Sequential": 22,
+    "Proximity": 122,
+    "Coverage": 4,
+    "Temporal": 0,
+    "Anomaly": 0
+  },
+  "training_time_sec": 1004.3,
+  "n_train": 2400,
+  "n_test": 600,
+  "group_id": "no-inter-drone",
+  "group_name": "드론간 관계 제거 (5개)",
+  "masked_indices": [
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "delta_pattern": 0.1534,
+  "delta_anomaly": -0.0983,
+  "delta_collision": -0.1818,
+  "delta_f1": 0.0142
+}

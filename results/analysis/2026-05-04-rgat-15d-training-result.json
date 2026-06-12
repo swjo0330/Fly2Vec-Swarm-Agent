@@ -1,0 +1,25 @@
+{
+  "model": "R-GAT 15d + Attn Pool",
+  "in_dim": 15,
+  "hidden_dim": 64,
+  "out_dim": 32,
+  "n_scenarios": 3000,
+  "epochs": 50,
+  "pattern_accuracy": 0.5117,
+  "anomaly_accuracy": 0.88,
+  "collision_accuracy": 0.8654,
+  "layer1_attention": {
+    "Sequential": 0.1758,
+    "Proximity": 0.3859,
+    "Coverage": 0.1896,
+    "Temporal": 0.1244,
+    "Anomaly": 0.1244
+  },
+  "layer2_attention": {
+    "Sequential": 0.1364,
+    "Proximity": 0.3249,
+    "Coverage": 0.1896,
+    "Temporal": 0.1745,
+    "Anomaly": 0.1745
+  }
+}

@@ -1,0 +1,119 @@
+services:
+  qdrant-fly2vec:
+    image: qdrant/qdrant:latest
+    container_name: qdrant-fly2vec
+    ports:
+      - "6340:6333"
+    volumes:
+      - fly2vec_qdrant_storage:/qdrant/storage
+    networks:
+      - fly2vec-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/6333' 2>/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  graph-embedding-mcp:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: fly2vec-graph-embedding-mcp
+    ports:
+      - "${GRAPH_EMBEDDING_MCP_PORT:-8050}:8050"
+    env_file: ../.env
+    environment:
+      - QDRANT_URL=http://qdrant-fly2vec:6333
+    command: ["python", "-m", "fly2vec.src.mcp_servers.graph_embedding_mcp"]
+    networks:
+      - fly2vec-net
+    depends_on:
+      qdrant-fly2vec:
+        condition: service_healthy
+    restart: unless-stopped
+
+  swarm-analysis-mcp:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: fly2vec-swarm-analysis-mcp
+    ports:
+      - "${SWARM_ANALYSIS_MCP_PORT:-8051}:8051"
+    env_file: ../.env
+    environment:
+      - QDRANT_URL=http://qdrant-fly2vec:6333
+    command: ["python", "-m", "fly2vec.src.mcp_servers.swarm_analysis_mcp"]
+    networks:
+      - fly2vec-net
+    depends_on:
+      qdrant-fly2vec:
+        condition: service_healthy
+    restart: unless-stopped
+
+  route-recommender-mcp:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: fly2vec-route-recommender-mcp
+    ports:
+      - "${ROUTE_RECOMMENDER_MCP_PORT:-8052}:8052"
+    env_file: ../.env
+    environment:
+      - QDRANT_URL=http://qdrant-fly2vec:6333
+      - GRAPH_EMBEDDING_MCP_URL=http://graph-embedding-mcp:8050/mcp
+      - SWARM_ANALYSIS_MCP_URL=http://swarm-analysis-mcp:8051/mcp
+    command: ["python", "-m", "fly2vec.src.mcp_servers.route_recommender_mcp"]
+    networks:
+      - fly2vec-net
+    depends_on:
+      qdrant-fly2vec:
+        condition: service_healthy
+      graph-embedding-mcp:
+        condition: service_started
+      swarm-analysis-mcp:
+        condition: service_started
+    restart: unless-stopped
+
+  mapbox-mcp:
+    image: mcp/mapbox:latest
+    container_name: fly2vec-mapbox-mcp
+    hostname: mapbox-mcp
+    stdin_open: true
+    env_file:
+      - ../.env
+    networks:
+      - fly2vec-net
+    restart: unless-stopped
+
+  fly2vec-agent:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: fly2vec-mission-planner
+    ports:
+      - "${AGENT_PORT:-8060}:8060"
+    env_file:
+      - ../.env
+    environment:
+      - QDRANT_URL=http://qdrant-fly2vec:6333
+      - GRAPH_EMBEDDING_MCP_URL=http://graph-embedding-mcp:8050/mcp
+      - SWARM_ANALYSIS_MCP_URL=http://swarm-analysis-mcp:8051/mcp
+      - MAPBOX_MCP_URL=https://mcp.mapbox.com/mcp
+      - ROUTE_RECOMMENDER_MCP_URL=http://route-recommender-mcp:8052/mcp
+    command: ["python", "-m", "fly2vec.src.agents.run_server"]
+    networks:
+      - fly2vec-net
+    depends_on:
+      - graph-embedding-mcp
+      - swarm-analysis-mcp
+      - route-recommender-mcp
+    restart: unless-stopped
+
+networks:
+  fly2vec-net:
+    driver: bridge
+
+volumes:
+  fly2vec_qdrant_storage:
+    name: fly2vec_qdrant_storage

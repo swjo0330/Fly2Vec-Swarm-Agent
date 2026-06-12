@@ -1,0 +1,51 @@
+{
+  "best_epoch": 50,
+  "pattern_accuracy": 0.4917,
+  "anomaly_accuracy": 0.8667,
+  "collision_recall": 0.0545,
+  "f1_macro": 0.3881,
+  "per_class_recall": {
+    "cooperative_search": 0.4098,
+    "relay_move": 0.7612,
+    "collision_risk": 0.0545,
+    "coverage_overlap": 0.3846
+  },
+  "per_class_f1": {
+    "cooperative_search": 0.4943,
+    "relay_move": 0.5564,
+    "collision_risk": 0.1017,
+    "coverage_overlap": 0.4
+  },
+  "layer1_type_weights": {
+    "Sequential": 0.2174,
+    "Proximity": 0.1948,
+    "Coverage": 0.1959,
+    "Temporal": 0.1959,
+    "Anomaly": 0.1959
+  },
+  "layer2_type_weights": {
+    "Sequential": 0.1863,
+    "Proximity": 0.3891,
+    "Coverage": 0.1415,
+    "Temporal": 0.1415,
+    "Anomaly": 0.1415
+  },
+  "sample_edge_counts": {
+    "Sequential": 0,
+    "Proximity": 122,
+    "Coverage": 0,
+    "Temporal": 0,
+    "Anomaly": 0
+  },
+  "training_time_sec": 773.3,
+  "n_train": 2400,
+  "n_test": 600,
+  "condition_id": "E-P",
+  "condition_name": "근접 단독",
+  "active_edge_types": [
+    1
+  ],
+  "active_edge_names": [
+    "Proximity"
+  ]
+}

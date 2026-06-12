@@ -1,0 +1,51 @@
+{
+  "best_epoch": 50,
+  "pattern_accuracy": 0.545,
+  "anomaly_accuracy": 0.8867,
+  "collision_recall": 0.7636,
+  "f1_macro": 0.3701,
+  "per_class_recall": {
+    "cooperative_search": 0.9286,
+    "relay_move": 0.1891,
+    "collision_risk": 0.7636,
+    "coverage_overlap": 0.0
+  },
+  "per_class_f1": {
+    "cooperative_search": 0.7519,
+    "relay_move": 0.2695,
+    "collision_risk": 0.459,
+    "coverage_overlap": 0.0
+  },
+  "layer1_type_weights": {
+    "Sequential": 0.2525,
+    "Proximity": 0.1071,
+    "Coverage": 0.4261,
+    "Temporal": 0.1071,
+    "Anomaly": 0.1071
+  },
+  "layer2_type_weights": {
+    "Sequential": 0.1231,
+    "Proximity": 0.1431,
+    "Coverage": 0.4476,
+    "Temporal": 0.1431,
+    "Anomaly": 0.1431
+  },
+  "sample_edge_counts": {
+    "Sequential": 0,
+    "Proximity": 0,
+    "Coverage": 4,
+    "Temporal": 0,
+    "Anomaly": 0
+  },
+  "training_time_sec": 356.9,
+  "n_train": 2400,
+  "n_test": 600,
+  "condition_id": "E-C",
+  "condition_name": "커버리지 단독",
+  "active_edge_types": [
+    2
+  ],
+  "active_edge_names": [
+    "Coverage"
+  ]
+}

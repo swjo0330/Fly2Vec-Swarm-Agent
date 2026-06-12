@@ -1,0 +1,53 @@
+{
+  "best_epoch": 50,
+  "pattern_accuracy": 0.465,
+  "anomaly_accuracy": 0.9917,
+  "collision_recall": 0.6,
+  "f1_macro": 0.5114,
+  "per_class_recall": {
+    "cooperative_search": 0.0,
+    "relay_move": 0.8756,
+    "collision_risk": 0.6,
+    "coverage_overlap": 0.8974
+  },
+  "per_class_f1": {
+    "cooperative_search": 0.0,
+    "relay_move": 0.5474,
+    "collision_risk": 0.66,
+    "coverage_overlap": 0.8383
+  },
+  "layer1_type_weights": {
+    "Sequential": 0.2148,
+    "Proximity": 0.3311,
+    "Coverage": 0.2132,
+    "Temporal": 0.1205,
+    "Anomaly": 0.1205
+  },
+  "layer2_type_weights": {
+    "Sequential": 0.3036,
+    "Proximity": 0.3311,
+    "Coverage": 0.1624,
+    "Temporal": 0.1015,
+    "Anomaly": 0.1015
+  },
+  "sample_edge_counts": {
+    "Sequential": 22,
+    "Proximity": 122,
+    "Coverage": 4,
+    "Temporal": 0,
+    "Anomaly": 0
+  },
+  "training_time_sec": 1141.3,
+  "n_train": 2400,
+  "n_test": 600,
+  "group_id": "no-altitude",
+  "group_name": "고도 제거 (alt, alt_change)",
+  "masked_indices": [
+    2,
+    10
+  ],
+  "delta_pattern": -0.1583,
+  "delta_anomaly": 0.0034,
+  "delta_collision": 0.4,
+  "delta_f1": -0.0654
+}

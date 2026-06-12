@@ -1,0 +1,329 @@
+{
+  "experiment": "Feature_Group_Ablation_v3",
+  "date": "2026-05-29",
+  "data_version": "v3",
+  "config": {
+    "n_scenarios": 3000,
+    "epochs": 50,
+    "seed": 42,
+    "feature_dim": 20,
+    "condition": "E-SPC"
+  },
+  "groups": [
+    {
+      "best_epoch": 10,
+      "pattern_accuracy": 0.6233,
+      "anomaly_accuracy": 0.9883,
+      "collision_recall": 0.2,
+      "f1_macro": 0.5768,
+      "per_class_recall": {
+        "cooperative_search": 0.4023,
+        "relay_move": 0.8856,
+        "collision_risk": 0.2,
+        "coverage_overlap": 1.0
+      },
+      "per_class_f1": {
+        "cooperative_search": 0.5431,
+        "relay_move": 0.6617,
+        "collision_risk": 0.3143,
+        "coverage_overlap": 0.7879
+      },
+      "layer1_type_weights": {
+        "Sequential": 0.2547,
+        "Proximity": 0.2805,
+        "Coverage": 0.2345,
+        "Temporal": 0.1152,
+        "Anomaly": 0.1152
+      },
+      "layer2_type_weights": {
+        "Sequential": 0.2246,
+        "Proximity": 0.2633,
+        "Coverage": 0.2089,
+        "Temporal": 0.1516,
+        "Anomaly": 0.1516
+      },
+      "sample_edge_counts": {
+        "Sequential": 22,
+        "Proximity": 122,
+        "Coverage": 4,
+        "Temporal": 0,
+        "Anomaly": 0
+      },
+      "training_time_sec": 2186.6,
+      "n_train": 2400,
+      "n_test": 600,
+      "group_id": "baseline",
+      "group_name": "마스킹 없음 (기준선)",
+      "masked_indices": []
+    },
+    {
+      "best_epoch": 50,
+      "pattern_accuracy": 0.6333,
+      "anomaly_accuracy": 0.9917,
+      "collision_recall": 0.4182,
+      "f1_macro": 0.6429,
+      "per_class_recall": {
+        "cooperative_search": 0.4098,
+        "relay_move": 0.8706,
+        "collision_risk": 0.4182,
+        "coverage_overlap": 0.9359
+      },
+      "per_class_f1": {
+        "cooperative_search": 0.5396,
+        "relay_move": 0.653,
+        "collision_risk": 0.5542,
+        "coverage_overlap": 0.8249
+      },
+      "layer1_type_weights": {
+        "Sequential": 0.2244,
+        "Proximity": 0.2951,
+        "Coverage": 0.2339,
+        "Temporal": 0.1233,
+        "Anomaly": 0.1233
+      },
+      "layer2_type_weights": {
+        "Sequential": 0.2304,
+        "Proximity": 0.3859,
+        "Coverage": 0.2299,
+        "Temporal": 0.0769,
+        "Anomaly": 0.0769
+      },
+      "sample_edge_counts": {
+        "Sequential": 22,
+        "Proximity": 122,
+        "Coverage": 4,
+        "Temporal": 0,
+        "Anomaly": 0
+      },
+      "training_time_sec": 23241.1,
+      "n_train": 2400,
+      "n_test": 600,
+      "group_id": "no-position",
+      "group_name": "위치 제거 (lat, lon)",
+      "masked_indices": [
+        0,
+        1
+      ],
+      "delta_pattern": 0.01,
+      "delta_anomaly": 0.0034,
+      "delta_collision": 0.2182,
+      "delta_f1": 0.0661
+    },
+    {
+      "best_epoch": 50,
+      "pattern_accuracy": 0.465,
+      "anomaly_accuracy": 0.9917,
+      "collision_recall": 0.6,
+      "f1_macro": 0.5114,
+      "per_class_recall": {
+        "cooperative_search": 0.0,
+        "relay_move": 0.8756,
+        "collision_risk": 0.6,
+        "coverage_overlap": 0.8974
+      },
+      "per_class_f1": {
+        "cooperative_search": 0.0,
+        "relay_move": 0.5474,
+        "collision_risk": 0.66,
+        "coverage_overlap": 0.8383
+      },
+      "layer1_type_weights": {
+        "Sequential": 0.2148,
+        "Proximity": 0.3311,
+        "Coverage": 0.2132,
+        "Temporal": 0.1205,
+        "Anomaly": 0.1205
+      },
+      "layer2_type_weights": {
+        "Sequential": 0.3036,
+        "Proximity": 0.3311,
+        "Coverage": 0.1624,
+        "Temporal": 0.1015,
+        "Anomaly": 0.1015
+      },
+      "sample_edge_counts": {
+        "Sequential": 22,
+        "Proximity": 122,
+        "Coverage": 4,
+        "Temporal": 0,
+        "Anomaly": 0
+      },
+      "training_time_sec": 1141.3,
+      "n_train": 2400,
+      "n_test": 600,
+      "group_id": "no-altitude",
+      "group_name": "고도 제거 (alt, alt_change)",
+      "masked_indices": [
+        2,
+        10
+      ],
+      "delta_pattern": -0.1583,
+      "delta_anomaly": 0.0034,
+      "delta_collision": 0.4,
+      "delta_f1": -0.0654
+    },
+    {
+      "best_epoch": 10,
+      "pattern_accuracy": 0.48,
+      "anomaly_accuracy": 0.9833,
+      "collision_recall": 0.5091,
+      "f1_macro": 0.5108,
+      "per_class_recall": {
+        "cooperative_search": 0.0,
+        "relay_move": 0.9204,
+        "collision_risk": 0.5091,
+        "coverage_overlap": 0.9615
+      },
+      "per_class_f1": {
+        "cooperative_search": 0.0,
+        "relay_move": 0.564,
+        "collision_risk": 0.6222,
+        "coverage_overlap": 0.8571
+      },
+      "layer1_type_weights": {
+        "Sequential": 0.2627,
+        "Proximity": 0.3026,
+        "Coverage": 0.2303,
+        "Temporal": 0.1022,
+        "Anomaly": 0.1022
+      },
+      "layer2_type_weights": {
+        "Sequential": 0.2289,
+        "Proximity": 0.284,
+        "Coverage": 0.1975,
+        "Temporal": 0.1448,
+        "Anomaly": 0.1448
+      },
+      "sample_edge_counts": {
+        "Sequential": 22,
+        "Proximity": 122,
+        "Coverage": 4,
+        "Temporal": 0,
+        "Anomaly": 0
+      },
+      "training_time_sec": 1188.9,
+      "n_train": 2400,
+      "n_test": 600,
+      "group_id": "no-speed-dist",
+      "group_name": "속도+거리 제거",
+      "masked_indices": [
+        4,
+        5,
+        6
+      ],
+      "delta_pattern": -0.1433,
+      "delta_anomaly": -0.005,
+      "delta_collision": 0.3091,
+      "delta_f1": -0.066
+    },
+    {
+      "best_epoch": 10,
+      "pattern_accuracy": 0.4283,
+      "anomaly_accuracy": 0.97,
+      "collision_recall": 0.0727,
+      "f1_macro": 0.3617,
+      "per_class_recall": {
+        "cooperative_search": 0.0263,
+        "relay_move": 0.8358,
+        "collision_risk": 0.0727,
+        "coverage_overlap": 1.0
+      },
+      "per_class_f1": {
+        "cooperative_search": 0.0476,
+        "relay_move": 0.5333,
+        "collision_risk": 0.1194,
+        "coverage_overlap": 0.7464
+      },
+      "layer1_type_weights": {
+        "Sequential": 0.2371,
+        "Proximity": 0.3519,
+        "Coverage": 0.1872,
+        "Temporal": 0.1119,
+        "Anomaly": 0.1119
+      },
+      "layer2_type_weights": {
+        "Sequential": 0.2337,
+        "Proximity": 0.2714,
+        "Coverage": 0.2008,
+        "Temporal": 0.147,
+        "Anomaly": 0.147
+      },
+      "sample_edge_counts": {
+        "Sequential": 22,
+        "Proximity": 122,
+        "Coverage": 4,
+        "Temporal": 0,
+        "Anomaly": 0
+      },
+      "training_time_sec": 1057.9,
+      "n_train": 2400,
+      "n_test": 600,
+      "group_id": "no-direction",
+      "group_name": "방향 제거 (bearing, bc)",
+      "masked_indices": [
+        7,
+        8
+      ],
+      "delta_pattern": -0.195,
+      "delta_anomaly": -0.0183,
+      "delta_collision": -0.1273,
+      "delta_f1": -0.2151
+    },
+    {
+      "best_epoch": 30,
+      "pattern_accuracy": 0.7767,
+      "anomaly_accuracy": 0.89,
+      "collision_recall": 0.0182,
+      "f1_macro": 0.591,
+      "per_class_recall": {
+        "cooperative_search": 0.8985,
+        "relay_move": 0.801,
+        "collision_risk": 0.0182,
+        "coverage_overlap": 0.8333
+      },
+      "per_class_f1": {
+        "cooperative_search": 0.8935,
+        "relay_move": 0.809,
+        "collision_risk": 0.0333,
+        "coverage_overlap": 0.628
+      },
+      "layer1_type_weights": {
+        "Sequential": 0.2597,
+        "Proximity": 0.3417,
+        "Coverage": 0.219,
+        "Temporal": 0.0898,
+        "Anomaly": 0.0898
+      },
+      "layer2_type_weights": {
+        "Sequential": 0.2124,
+        "Proximity": 0.2796,
+        "Coverage": 0.3021,
+        "Temporal": 0.1029,
+        "Anomaly": 0.1029
+      },
+      "sample_edge_counts": {
+        "Sequential": 22,
+        "Proximity": 122,
+        "Coverage": 4,
+        "Temporal": 0,
+        "Anomaly": 0
+      },
+      "training_time_sec": 1004.3,
+      "n_train": 2400,
+      "n_test": 600,
+      "group_id": "no-inter-drone",
+      "group_name": "드론간 관계 제거 (5개)",
+      "masked_indices": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "delta_pattern": 0.1534,
+      "delta_anomaly": -0.0983,
+      "delta_collision": -0.1818,
+      "delta_f1": 0.0142
+    }
+  ]
+}

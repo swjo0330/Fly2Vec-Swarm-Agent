@@ -1,0 +1,18 @@
+{
+  "total": 1050,
+  "normal": 654,
+  "anomaly": 396,
+  "types": {
+    "cooperative_search": 418,
+    "relay_move": 486,
+    "coverage_overlap": 79,
+    "collision_risk": 67
+  },
+  "anomaly_types": {
+    "battery_low": 60,
+    "gps_drift": 60,
+    "vehicle_loss": 60,
+    "comm_outage": 60,
+    "near_miss": 10
+  }
+}
